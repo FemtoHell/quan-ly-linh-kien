@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xóa Linh Kiện</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .search-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button.primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button.secondary {
+            background-color: #f44336;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .nav-buttons a {
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .action-link {
+            color: #f44336;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        .delete-all {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .checkbox-column {
+            width: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Quản lý Linh Kiện Máy Tính</h1>
+    </header>
+
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="/">Về trang chủ</a>
+        </div>
+
+        <h2>Xóa linh kiện</h2>
+        
+        <div id="message"></div>
+        
+        <div class="search-container">
+            <h3>Tìm kiếm linh kiện cần xóa</h3>
+            <form id="searchForm" onsubmit="searchProducts(event)">
+                <div class="form-group">
+                    <label for="search">ID hoặc tên linh kiện:</label>
+                    <input type="text" id="search" name="search" placeholder="Nhập ID hoặc tên linh kiện...">
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="primary">Tìm kiếm</button>
+                    <button type="button" class="secondary" onclick="resetSearch()">Làm mới</button>
+                </div>
+            </form>
+        </div>
+        
+        <div id="products-container">
+            <div class="delete-all">
+                <button type="button" class="secondary" onclick="deleteSelectedProducts()">Xóa các mục đã chọn</button>
+            </div>
+            
+            <table id="products-table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-column"><input type="checkbox" id="select-all" onclick="toggleSelectAll()"></th>
+                        <th>ID</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Loại</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tình trạng</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="products-list">
+                    <!-- Danh sách sẽ được điền từ JavaScript -->
+                </tbody>
+            </table>
+            
+            <div class="delete-all" style="margin-top: 10px;">
+                <a href="#" class="action-link" onclick="deleteAllProducts()">Xóa tất cả</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tải danh sách sản phẩm
+            fetchProducts();
+        });
+        
+        // Hàm tải danh sách sản phẩm
+        function fetchProducts() {
+            fetch('/api/linhkien')
+                .then(response => response.json())
+                .then(data => {
+                    renderProducts(data.products);
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu sản phẩm:', error);
+                    showMessage('Không thể tải dữ liệu sản phẩm.', 'error');
+                });
+        }
+        
+        // Hàm tìm kiếm sản phẩm
+        function searchProducts(event) {
+            event.preventDefault();
+            
+            const searchTerm = document.getElementById('search').value.trim();
+            
+            if (!searchTerm) {
+                fetchProducts();
+                return;
+            }
+            
+            // Tạo query parameters
+            const searchParams = new URLSearchParams();
+            
+            // Kiểm tra xem searchTerm có phải là ID không (bắt đầu bằng 3 chữ cái và 5 số)
+            if (/^[a-zA-Z]{3}\d{5}$/.test(searchTerm)) {
+                searchParams.append('id', searchTerm);
+            } else {
+                searchParams.append('name', searchTerm);
+            }
+            
+            // Gửi yêu cầu tìm kiếm
+            fetch(`/api/linhkien?${searchParams.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderProducts(data.products);
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tìm kiếm sản phẩm:', error);
+                    showMessage('Không thể tìm kiếm sản phẩm.', 'error');
+                });
+        }
+        
+        // Hàm đặt lại tìm kiếm
+        function resetSearch() {
+            document.getElementById('searchForm').reset();
+            fetchProducts();
+        }
+        
+        // Hàm hiển thị danh sách sản phẩm
+        function renderProducts(products) {
+            const productsList = document.getElementById('products-list');
+            productsList.innerHTML = '';
+            
+            if (products.length === 0) {
+                const noDataRow = document.createElement('tr');
+                const noDataCell = document.createElement('td');
+                noDataCell.textContent = 'Không có dữ liệu';
+                noDataCell.colSpan = 8;
+                noDataCell.style.textAlign = 'center';
+                noDataRow.appendChild(noDataCell);
+                productsList.appendChild(noDataRow);
+                return;
+            }
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                
+                // Checkbox
+                const checkboxCell = document.createElement('td');
+                checkboxCell.className = 'checkbox-column';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = product.id;
+                checkbox.className = 'product-checkbox';
+                checkboxCell.appendChild(checkbox);
+                row.appendChild(checkboxCell);
+                
+                // ID
+                const idCell = document.createElement('td');
+                idCell.textContent = product.id;
+                row.appendChild(idCell);
+                
+                // Tên
+                const nameCell = document.createElement('td');
+                nameCell.textContent = product.name;
+                row.appendChild(nameCell);
+                
+                // Loại
+                const typeCell = document.createElement('td');
+                typeCell.textContent = product.loai;
+                row.appendChild(typeCell);
+                
+                // Giá
+                const priceCell = document.createElement('td');
+                priceCell.textContent = formatCurrency(product.price);
+                row.appendChild(priceCell);
+                
+                // Số lượng
+                const quantityCell = document.createElement('td');
+                quantityCell.textContent = product.soLuong;
+                row.appendChild(quantityCell);
+                
+                // Tình trạng
+                const statusCell = document.createElement('td');
+                statusCell.textContent = product.tinhTrang;
+                row.appendChild(statusCell);
+                
+                // Thao tác
+                const actionCell = document.createElement('td');
+                
+                // Nút xóa
+                const deleteBtn = document.createElement('a');
+                deleteBtn.textContent = 'Xóa';
+                deleteBtn.href = '#';
+                deleteBtn.className = 'action-link';
+                deleteBtn.onclick = function(e) {
+                    e.preventDefault();
+                    confirmDeleteProduct(product.id, product.name);
+                };
+                actionCell.appendChild(deleteBtn);
+                
+                row.appendChild(actionCell);
+                
+                productsList.appendChild(row);
+            });
+        }
+        
+        // Hàm xác nhận xóa sản phẩm
+        function confirmDeleteProduct(id, name) {
+            if (confirm(`Bạn có chắc muốn xóa "${name}" (ID: ${id})?`)) {
+                deleteProduct(id);
+            }
+        }
+        
+        // Hàm xóa sản phẩm
+        function deleteProduct(id) {
+            fetch(`/api/linhkien/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                showMessage(data.message, 'success');
+                fetchProducts();
+            })
+            .catch(error => {
+                console.error('Lỗi khi xóa sản phẩm:', error);
+                showMessage('Không thể xóa sản phẩm.', 'error');
+            });
+        }
+        
+        // Hàm chọn/bỏ chọn tất cả
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('.product-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+        }
+        
+        // Hàm xóa các sản phẩm đã chọn
+        function deleteSelectedProducts() {
+            const selectedCheckboxes = document.querySelectorAll('.product-checkbox:checked');
+            
+            if (selectedCheckboxes.length === 0) {
+                showMessage('Vui lòng chọn ít nhất một sản phẩm để xóa.', 'error');
+                return;
+            }
+            
+            if (confirm(`Bạn có chắc muốn xóa ${selectedCheckboxes.length} sản phẩm đã chọn?`)) {
+                const selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+                
+                fetch('/api/linhkien', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ids: selectedIds })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showMessage(data.message, 'success');
+                    fetchProducts();
+                })
+                .catch(error => {
+                    console.error('Lỗi khi xóa sản phẩm:', error);
+                    showMessage('Không thể xóa sản phẩm.', 'error');
+                });
+            }
+        }
+        
+        // Hàm xóa tất cả sản phẩm
+        function deleteAllProducts() {
+            if (confirm('Bạn có chắc muốn xóa TẤT CẢ sản phẩm? Hành động này không thể hoàn tác!')) {
+                // Lấy tất cả ID sản phẩm
+                fetch('/api/linhkien')
+                    .then(response => response.json())
+                    .then(data => {
+                        const allIds = data.products.map(product => product.id);
+                        
+                        // Xóa tất cả
+                        fetch('/api/linhkien', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ ids: allIds })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            showMessage(data.message, 'success');
+                            fetchProducts();
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi xóa tất cả sản phẩm:', error);
+                            showMessage('Không thể xóa tất cả sản phẩm.', 'error');
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+                        showMessage('Không thể lấy danh sách sản phẩm.', 'error');
+                    });
+            }
+        }
+        
+        // Hàm hiển thị thông báo
+        function showMessage(message, type) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.className = type;
+            messageElement.style.display = 'block';
+            
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Hàm định dạng tiền tệ
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+    </script>
+</body>
+</html>

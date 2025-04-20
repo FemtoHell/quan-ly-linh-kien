@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập Nhật Linh Kiện</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .search-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button.primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button.secondary {
+            background-color: #f44336;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .form-container {
+            display: flex;
+            gap: 30px;
+        }
+        .form-section {
+            flex: 1;
+        }
+        #message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .nav-buttons a {
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Quản lý Linh Kiện Máy Tính</h1>
+    </header>
+
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="/">Về trang chủ</a>
+        </div>
+
+        <h2>Cập nhật linh kiện</h2>
+        
+        <div id="message"></div>
+        
+        <div class="search-container">
+            <h3>Tìm kiếm linh kiện cần cập nhật</h3>
+            <form action="/read/for/update" method="GET">
+                <div class="form-group">
+                    <label for="userId">ID linh kiện:</label>
+                    <input type="text" id="userId" name="userId" placeholder="Nhập ID linh kiện..." required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="primary">Tìm kiếm</button>
+                    <button type="reset" class="secondary">Làm mới</button>
+                </div>
+            </form>
+        </div>
+        
+        <div id="update-form" style="display: none;">
+            <h3>Cập nhật thông tin linh kiện</h3>
+            <form id="updateForm">
+                <div class="form-container">
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="id">ID:</label>
+                            <input type="text" id="id" name="id" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">Tên sản phẩm:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loai">Loại:</label>
+                            <select id="loai" name="loai" required>
+                                <option value="">-- Chọn loại --</option>
+                                <option value="CPU">CPU</option>
+                                <option value="GPU">GPU</option>
+                                <option value="RAM">RAM</option>
+                                <option value="SSD">SSD</option>
+                                <option value="HDD">HDD</option>
+                                <option value="Mainboard">Mainboard</option>
+                                <option value="PSU">PSU</option>
+                                <option value="Case">Case</option>
+                                <option value="Cooling">Cooling</option>
+                                <option value="Fan">Fan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="price">Giá:</label>
+                            <input type="number" id="price" name="price" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="soLuong">Số lượng:</label>
+                            <input type="number" id="soLuong" name="soLuong" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="xuatXu">Xuất xứ:</label>
+                            <input type="text" id="xuatXu" name="xuatXu" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tinhTrang">Tình trạng:</label>
+                            <select id="tinhTrang" name="tinhTrang" required>
+                                <option value="Còn hàng">Còn hàng</option>
+                                <option value="Sắp hết hàng">Sắp hết hàng</option>
+                                <option value="Hết hàng">Hết hàng</option>
+                                <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="image">Hình ảnh mới (không bắt buộc):</label>
+                            <input type="file" id="image" name="image" accept="image/*">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Mô tả:</label>
+                            <textarea id="description" name="description" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="primary" onclick="updateUser()">Cập nhật</button>
+                    <button type="button" class="secondary" onclick="window.location.href='/update'">Hủy</button>
+                </div>
+            </form>
+        </div>
+        
+        <div id="products-container">
+            <h3>Danh sách linh kiện</h3>
+            <table id="products-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Loại</th>
+                        <th>Giá</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="products-list">
+                    <!-- Danh sách sẽ được điền từ JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Biến lưu dữ liệu sản phẩm hiện tại
+        let currentUser = {};
+        
+        // Khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra xem có tham số từ URL không
+            const queryParams = new URLSearchParams(window.location.search);
+            const id = queryParams.get('id');
+            
+            // Nếu có error thì hiển thị
+            const error = queryParams.get('error');
+            if (error) {
+                showMessage(error, 'error');
+            }
+            
+            // Nếu có ID, điền dữ liệu vào form
+            if (id) {
+                // Chuyển đổi từ URLSearchParams sang đối tượng
+                currentUser = Object.fromEntries(queryParams.entries());
+                
+                // Điền dữ liệu vào form
+                fillForm(currentUser);
+                
+                // Hiển thị form
+                document.getElementById('update-form').style.display = 'block';
+            }
+            
+            // Tải danh sách sản phẩm
+            fetchProducts();
+        });
+        
+        // Hàm điền dữ liệu vào form
+        function fillForm(user) {
+            document.getElementById('id').value = user.id;
+            document.getElementById('name').value = user.name;
+            document.getElementById('loai').value = user.loai;
+            document.getElementById('price').value = user.price;
+            document.getElementById('soLuong').value = user.soLuong;
+            document.getElementById('xuatXu').value = user.xuatXu;
+            document.getElementById('tinhTrang').value = user.tinhTrang;
+            document.getElementById('description').value = user.description;
+        }
+        
+        // Hàm cập nhật thông tin
+        function updateUser() {
+            // Lấy dữ liệu từ form
+            const id = document.getElementById('id').value;
+            const name = document.getElementById('name').value;
+            const loai = document.getElementById('loai').value;
+            const price = parseInt(document.getElementById('price').value);
+            const soLuong = parseInt(document.getElementById('soLuong').value);
+            const xuatXu = document.getElementById('xuatXu').value;
+            const tinhTrang = document.getElementById('tinhTrang').value;
+            const description = document.getElementById('description').value;
+            
+            // Kiểm tra dữ liệu
+            if (!name || !loai || isNaN(price) || isNaN(soLuong) || !xuatXu || !tinhTrang || !description) {
+                showMessage("Vui lòng điền đầy đủ thông tin", "error");
+                return;
+            }
+            
+            // Tạo FormData để gửi dữ liệu
+            const formData = new FormData();
+            formData.append('id', id);
+            formData.append('name', name);
+            formData.append('loai', loai);
+            formData.append('price', price);
+            formData.append('soLuong', soLuong);
+            formData.append('xuatXu', xuatXu);
+            formData.append('tinhTrang', tinhTrang);
+            formData.append('description', description);
+            
+            // Thêm file hình ảnh nếu có
+            const imageFile = document.getElementById('image').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+            
+            // Gửi yêu cầu cập nhật
+            fetch(`/api/linhkien/${id}`, {
+                method: 'PUT',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Phản hồi từ server:", data);
+                showMessage(data.message, "success");
+                
+                // Làm mới danh sách
+                fetchProducts();
+                
+                // Đặt lại form sau 2 giây
+                setTimeout(() => {
+                    window.location.href = "/update";
+                }, 2000);
+            })
+            .catch(err => {
+                console.error("Lỗi:", err);
+                showMessage("Không thể cập nhật linh kiện: " + err, "error");
+            });
+        }
+        
+        // Hàm tải danh sách sản phẩm
+        function fetchProducts() {
+            fetch('/api/linhkien?limit=10')
+                .then(response => response.json())
+                .then(data => {
+                    renderProducts(data.products);
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu sản phẩm:', error);
+                    showMessage('Không thể tải dữ liệu sản phẩm.', 'error');
+                });
+        }
+        
+        // Hàm hiển thị danh sách sản phẩm
+        function renderProducts(products) {
+            const productsList = document.getElementById('products-list');
+            productsList.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                
+                // ID
+                const idCell = document.createElement('td');
+                idCell.textContent = product.id;
+                row.appendChild(idCell);
+                
+                // Tên
+                const nameCell = document.createElement('td');
+                nameCell.textContent = product.name;
+                row.appendChild(nameCell);
+                
+                // Loại
+                const typeCell = document.createElement('td');
+                typeCell.textContent = product.loai;
+                row.appendChild(typeCell);
+                
+                // Giá
+                const priceCell = document.createElement('td');
+                priceCell.textContent = formatCurrency(product.price);
+                row.appendChild(priceCell);
+                
+                // Thao tác
+                const actionCell = document.createElement('td');
+                
+                // Nút sửa
+                const editBtn = document.createElement('a');
+                editBtn.textContent = 'Sửa';
+                editBtn.href = `/update?id=${product.id}`;
+                editBtn.style.marginRight = '10px';
+                editBtn.style.color = '#4CAF50';
+                editBtn.style.textDecoration = 'none';
+                actionCell.appendChild(editBtn);
+                
+                row.appendChild(actionCell);
+                
+                productsList.appendChild(row);
+            });
+        }
+        
+        // Hàm hiển thị thông báo
+        function showMessage(message, type) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.className = type;
+            messageElement.style.display = 'block';
+            
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Hàm định dạng tiền tệ
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+    </script>
+</body>
+</html>

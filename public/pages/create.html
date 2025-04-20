@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Linh Kiện Mới</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .form-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .form-section {
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button.primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button.secondary {
+            background-color: #f44336;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .nav-buttons a {
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        #file-upload-container {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #preview-container {
+            margin-top: 20px;
+        }
+        #json-preview {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body onload="setFocusName()">
+    <header>
+        <h1>Quản lý Linh Kiện Máy Tính</h1>
+    </header>
+
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="/">Về trang chủ</a>
+        </div>
+
+        <h2>Thêm Linh Kiện Mới</h2>
+        
+        <div id="message"></div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('create-one')">Thêm Một Linh Kiện</div>
+            <div class="tab" onclick="switchTab('create-many')">Thêm Nhiều Linh Kiện</div>
+        </div>
+        
+        <div id="create-one" class="tab-content active">
+            <form id="createForm">
+                <div class="form-container">
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="id">ID:</label>
+                            <input type="text" id="id" name="id" required>
+                            <small>* ID phải gồm 3 ký tự chữ và 5 ký tự số</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">Tên sản phẩm:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loai">Loại:</label>
+                            <select id="loai" name="loai" required>
+                                <option value="">-- Chọn loại --</option>
+                                <option value="CPU">CPU</option>
+                                <option value="GPU">GPU</option>
+                                <option value="RAM">RAM</option>
+                                <option value="SSD">SSD</option>
+                                <option value="HDD">HDD</option>
+                                <option value="Mainboard">Mainboard</option>
+                                <option value="PSU">PSU</option>
+                                <option value="Case">Case</option>
+                                <option value="Cooling">Cooling</option>
+                                <option value="Fan">Fan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="price">Giá:</label>
+                            <input type="number" id="price" name="price" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="soLuong">Số lượng:</label>
+                            <input type="number" id="soLuong" name="soLuong" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="xuatXu">Xuất xứ:</label>
+                            <input type="text" id="xuatXu" name="xuatXu" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tinhTrang">Tình trạng:</label>
+                            <select id="tinhTrang" name="tinhTrang" required>
+                                <option value="Còn hàng">Còn hàng</option>
+                                <option value="Sắp hết hàng">Sắp hết hàng</option>
+                                <option value="Hết hàng">Hết hàng</option>
+                                <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="image">Hình ảnh:</label>
+                            <input type="file" id="image" name="image" accept="image/*">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Mô tả:</label>
+                            <textarea id="description" name="description" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="primary" onclick="addUser()">Thêm</button>
+                    <button type="button" onclick="submitUsers()">Gửi đến server</button>
+                    <button type="button" class="secondary" onclick="resetForm()">Xóa form</button>
+                </div>
+            </form>
+        </div>
+        
+        <div id="create-many" class="tab-content">
+            <div id="file-upload-container">
+                <h3>Tải lên file JSON</h3>
+                <p>Tải lên file JSON chứa thông tin nhiều linh kiện để thêm cùng lúc.</p>
+                <input type="file" id="json-file" accept=".json">
+                <button type="button" class="primary" onclick="loadJsonFile()">Tải lên</button>
+            </div>
+            
+            <div id="preview-container" style="display: none;">
+                <h3>Xem trước dữ liệu</h3>
+                <div id="json-preview"></div>
+                <p><span id="valid-items-count">0</span> sản phẩm hợp lệ sẽ được thêm vào.</p>
+                <div class="button-group">
+                    <button type="button" class="primary" onclick="submitJsonData()">Thêm tất cả</button>
+                    <button type="button" class="secondary" onclick="cancelJsonUpload()">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Biến toàn cục
+        var users = [];
+        var jsonData = null;
+        
+        // Hàm chuyển tab
+        function switchTab(tabId) {
+            // Ẩn tất cả nội dung tab
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Bỏ active tất cả tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Hiện tab được chọn
+            document.getElementById(tabId).classList.add('active');
+            
+            // Active tab được chọn
+            document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+        }
+        
+        // Hàm thêm người dùng vào mảng
+        function addUser() {
+            var id = document.getElementById('id').value;
+            var name = document.getElementById('name').value;
+            var loai = document.getElementById('loai').value;
+            var price = parseInt(document.getElementById('price').value);
+            var soLuong = parseInt(document.getElementById('soLuong').value);
+            var xuatXu = document.getElementById('xuatXu').value;
+            var tinhTrang = document.getElementById('tinhTrang').value;
+            var description = document.getElementById('description').value;
+            
+            // Kiểm tra ID hợp lệ
+            const idPattern = /^[a-zA-Z]{3}\d{5}$/;
+            if (!idPattern.test(id)) {
+                showMessage('ID không hợp lệ. ID phải gồm 3 ký tự chữ và 5 ký tự số', 'error');
+                return;
+            }
+            
+            // Kiểm tra các trường bắt buộc
+            if (!name || !loai || !price || !soLuong || !xuatXu || !tinhTrang || !description) {
+                showMessage('Vui lòng điền đầy đủ thông tin', 'error');
+                return;
+            }
+            
+            // Tạo đối tượng linh kiện mới
+            var user = {
+                id: id,
+                name: name,
+                loai: loai,
+                price: price,
+                soLuong: soLuong,
+                xuatXu: xuatXu,
+                tinhTrang: tinhTrang,
+                description: description,
+                image: id + '.jpg'
+            };
+            
+            // Thêm vào mảng
+            users.push(user);
+            
+            // Hiển thị thông báo
+            outputMessage(`Đã thêm linh kiện [${name}] vào danh sách`, 'success');
+        }
+        
+        // Hàm gửi dữ liệu đến server
+        function submitUsers() {
+            if (users.length === 0) {
+                showMessage('Chưa có linh kiện nào được thêm', 'error');
+                return;
+            }
+            
+            // Chuẩn bị dữ liệu form
+            const formData = new FormData();
+            
+            // Thêm file hình ảnh nếu có
+            const imageFile = document.getElementById('image').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+            
+            // Thêm dữ liệu linh kiện
+            formData.append('id', users[0].id);
+            formData.append('name', users[0].name);
+            formData.append('loai', users[0].loai);
+            formData.append('price', users[0].price);
+            formData.append('soLuong', users[0].soLuong);
+            formData.append('xuatXu', users[0].xuatXu);
+            formData.append('tinhTrang', users[0].tinhTrang);
+            formData.append('description', users[0].description);
+            
+            // Gửi dữ liệu
+            fetch('/api/linhkien', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Phản hồi từ server:', data);
+                showMessage(data.message, 'success');
+                resetForm();
+            })
+            .catch(err => {
+                console.error('Lỗi:', err);
+                showMessage('Không thể thêm linh kiện: ' + err, 'error');
+            });
+        }
+        
+        // Hàm tải file JSON
+        function loadJsonFile() {
+            const fileInput = document.getElementById('json-file');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showMessage('Vui lòng chọn file JSON', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    jsonData = JSON.parse(e.target.result);
+                    
+                    // Kiểm tra dữ liệu
+                    const validItems = validateJsonData(jsonData);
+                    
+                    // Hiển thị xem trước
+                    document.getElementById('json-preview').textContent = JSON.stringify(validItems, null, 2);
+                    document.getElementById('valid-items-count').textContent = validItems.length;
+                    document.getElementById('preview-container').style.display = 'block';
+                } catch (error) {
+                    console.error('Lỗi khi đọc file JSON:', error);
+                    showMessage('File JSON không hợp lệ', 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // Hàm kiểm tra dữ liệu JSON
+        function validateJsonData(data) {
+            if (!Array.isArray(data)) {
+                showMessage('Dữ liệu JSON phải là một mảng', 'error');
+                return [];
+            }
+            
+            const idPattern = /^[a-zA-Z]{3}\d{5}$/;
+            const validItems = [];
+            
+            data.forEach(item => {
+                // Kiểm tra các trường bắt buộc
+                if (!item.id || !item.name || !item.loai || !item.price || 
+                    !item.soLuong || !item.xuatXu || !item.tinhTrang || !item.description) {
+                    return; // Bỏ qua item không hợp lệ
+                }
+                
+                // Kiểm tra ID
+                if (!idPattern.test(item.id)) {
+                    return; // Bỏ qua item không hợp lệ
+                }
+                
+                // Thêm vào danh sách hợp lệ
+                validItems.push(item);
+            });
+            
+            return validItems;
+        }
+        
+        // Hàm gửi dữ liệu JSON
+        function submitJsonData() {
+            if (!jsonData) {
+                showMessage('Không có dữ liệu JSON', 'error');
+                return;
+            }
+            
+            const validItems = validateJsonData(jsonData);
+            
+            if (validItems.length === 0) {
+                showMessage('Không có linh kiện hợp lệ để thêm', 'error');
+                return;
+            }
+            
+            // Gửi dữ liệu
+            fetch('/api/linhkien/batch', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(validItems)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Phản hồi từ server:', data);
+                showMessage(data.message, 'success');
+                cancelJsonUpload();
+            })
+            .catch(err => {
+                console.error('Lỗi:', err);
+                showMessage('Không thể thêm linh kiện: ' + err, 'error');
+            });
+        }
+        
+        // Hàm hủy tải lên JSON
+        function cancelJsonUpload() {
+            jsonData = null;
+            document.getElementById('json-file').value = '';
+            document.getElementById('preview-container').style.display = 'none';
+        }
+        
+        // Hàm hiển thị thông báo
+        function outputMessage(message, color) {
+            var messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.style.color = color === 'success' ? '#3c763d' : '#a94442';
+            messageElement.className = color;
+            messageElement.style.display = 'block';
+        }
+        
+        // Hàm hiển thị thông báo
+        function showMessage(message, type) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.className = type;
+            messageElement.style.display = 'block';
+            
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Hàm đặt lại form
+        function resetForm() {
+            document.getElementById('createForm').reset();
+            document.getElementById('message').textContent = '';
+            document.getElementById('message').style.display = 'none';
+            users = [];
+            setFocusName();
+        }
+        
+        // Hàm đặt focus cho trường name
+        function setFocusName() {
+            document.getElementById('name').focus();
+        }
+    </script>
+</body>
+</html>
