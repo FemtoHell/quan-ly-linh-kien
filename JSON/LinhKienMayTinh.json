@@ -1,104 +1,5 @@
 [
   {
-    "id": "cpu00001",
-    "name": "Intel Core i9-13900K",
-    "image": "cpu00001.jpg",
-    "price": 15500000,
-    "description": "Bộ vi xử lý cao cấp 24 nhân 32 luồng, xung nhịp tối đa 5.8GHz",
-    "loai": "CPU",
-    "soLuong": 15,
-    "xuatXu": "Pháp",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "cpu00002",
-    "name": "AMD Ryzen 9 7950X",
-    "image": "cpu00002.jpg",
-    "price": 14800000,
-    "description": "Bộ vi xử lý 16 nhân 32 luồng, xung nhịp tối đa 5.7GHz",
-    "loai": "CPU",
-    "soLuong": 12,
-    "xuatXu": "Anh Quốc",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "cpu00003",
-    "name": "Intel Core i7-13700K",
-    "image": "cpu00003.jpg",
-    "price": 9800000,
-    "description": "Bộ vi xử lý 16 nhân 24 luồng, xung nhịp tối đa 5.4GHz",
-    "loai": "CPU",
-    "soLuong": 25,
-    "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "cpu00004",
-    "name": "AMD Ryzen 7 7700X",
-    "image": "cpu00004.jpg",
-    "price": 8500000,
-    "description": "Bộ vi xử lý 8 nhân 16 luồng, xung nhịp tối đa 5.4GHz",
-    "loai": "CPU",
-    "soLuong": 20,
-    "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "gpu00001",
-    "name": "NVIDIA RTX 4090",
-    "image": "gpu00001.jpg",
-    "price": 42000000,
-    "description": "Card đồ họa cao cấp 24GB GDDR6X, 16384 CUDA cores",
-    "loai": "GPU",
-    "soLuong": 8,
-    "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "gpu00002",
-    "name": "AMD Radeon RX 7900 XTX",
-    "image": "gpu00002.jpg",
-    "price": 25000000,
-    "description": "Card đồ họa cao cấp 24GB GDDR6, 12288 stream processors",
-    "loai": "GPU",
-    "soLuong": 10,
-    "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "gpu00003",
-    "name": "NVIDIA RTX 4070 Ti",
-    "image": "gpu00003.jpg",
-    "price": 18500000,
-    "description": "Card đồ họa 12GB GDDR6X, 7680 CUDA cores",
-    "loai": "GPU",
-    "soLuong": 15,
-    "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "ram00001",
-    "name": "Corsair Vengeance RGB Pro 32GB",
-    "image": "ram00001.jpg",
-    "price": 3200000,
-    "description": "Bộ nhớ DDR4 3600MHz, 2x16GB, LED RGB",
-    "loai": "RAM",
-    "soLuong": 30,
-    "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
-  },
-  {
-    "id": "ram00002",
-    "name": "G.Skill Trident Z5 RGB 32GB",
-    "image": "ram00002.jpg",
-    "price": 4500000,
-    "description": "Bộ nhớ DDR5 6000MHz, 2x16GB, LED RGB",
-    "loai": "RAM",
-    "soLuong": 25,
-    "xuatXu": "Đài Loan",
-    "tinhTrang": "Còn hàng"
-  },
-  {
     "id": "ram00003",
     "name": "Kingston FURY Beast 64GB",
     "image": "ram00003.jpg",
@@ -107,7 +8,15 @@
     "loai": "RAM",
     "soLuong": 15,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "dacTrung": {
+      "dungLuong": 16,
+      "loai": "DDR5",
+      "tocDo": 5200,
+      "latency": "CL36",
+      "rgb": false
+    },
+    "tinhTrang": "Còn hàng",
+    "_id": "6808768c2aa1fb6584ab7957"
   },
   {
     "id": "ssd00001",
@@ -118,7 +27,15 @@
     "loai": "SSD",
     "soLuong": 20,
     "xuatXu": "Hàn Quốc",
-    "tinhTrang": "Còn hàng"
+    "dacTrung": {
+      "dungLuong": 1000,
+      "chuanGiaoTiep": "NVMe PCIe 4.0",
+      "tocDoDoc": 7450,
+      "tocDoGhi": 6900,
+      "tbw": 600
+    },
+    "tinhTrang": "Còn hàng",
+    "_id": "6808768c2aa1fb6584ab7958"
   },
   {
     "id": "ssd00002",
@@ -129,7 +46,15 @@
     "loai": "SSD",
     "soLuong": 25,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "dacTrung": {
+      "dungLuong": 1000,
+      "chuanGiaoTiep": "NVMe PCIe 4.0",
+      "tocDoDoc": 7450,
+      "tocDoGhi": 6900,
+      "tbw": 600
+    },
+    "tinhTrang": "Còn hàng",
+    "_id": "6808768c2aa1fb6584ab7959"
   },
   {
     "id": "ssd00003",
@@ -140,7 +65,186 @@
     "loai": "SSD",
     "soLuong": 18,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "dacTrung": {
+      "dungLuong": 1000,
+      "chuanGiaoTiep": "NVMe PCIe 4.0",
+      "tocDoDoc": 7450,
+      "tocDoGhi": 6900,
+      "tbw": 600
+    },
+    "tinhTrang": "Còn hàng",
+    "_id": "6808768c2aa1fb6584ab795a"
+  },
+  {
+    "id": "cpu00001",
+    "name": "Intel Core i9-13900K",
+    "image": "cpu00001.jpg",
+    "price": 15500000,
+    "description": "Bộ vi xử lý cao cấp 24 nhân 32 luồng, xung nhịp tối đa 5.8GHz",
+    "loai": "CPU",
+    "soLuong": 15,
+    "xuatXu": "Pháp",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "soNhan": 12,
+      "soLuong": 20,
+      "xungNhip": 3.6,
+      "socket": "LGA1700",
+      "tdp": 125
+    },
+    "_id": "6808657918baa812872802ea"
+  },
+  {
+    "id": "cpu00002",
+    "name": "AMD Ryzen 9 7950X",
+    "image": "cpu00002.jpg",
+    "price": 14800000,
+    "description": "Bộ vi xử lý 16 nhân 32 luồng, xung nhịp tối đa 5.7GHz",
+    "loai": "CPU",
+    "soLuong": 12,
+    "xuatXu": "Anh Quốc",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "soNhan": 12,
+      "soLuong": 20,
+      "xungNhip": 3.6,
+      "socket": "LGA1700",
+      "tdp": 125
+    },
+    "_id": "6808657918baa812872802eb"
+  },
+  {
+    "id": "cpu00003",
+    "name": "Intel Core i7-13700K",
+    "image": "cpu00003.jpg",
+    "price": 9800000,
+    "description": "Bộ vi xử lý 16 nhân 24 luồng, xung nhịp tối đa 5.4GHz",
+    "loai": "CPU",
+    "soLuong": 25,
+    "xuatXu": "Mỹ",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "soNhan": 12,
+      "soLuong": 20,
+      "xungNhip": 3.6,
+      "socket": "LGA1700",
+      "tdp": 125
+    },
+    "_id": "6808657918baa812872802ec"
+  },
+  {
+    "id": "cpu00004",
+    "name": "AMD Ryzen 7 7700X",
+    "image": "cpu00004.jpg",
+    "price": 8500000,
+    "description": "Bộ vi xử lý 8 nhân 16 luồng, xung nhịp tối đa 5.4GHz",
+    "loai": "CPU",
+    "soLuong": 20,
+    "xuatXu": "Mỹ",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "soNhan": 12,
+      "soLuong": 20,
+      "xungNhip": 3.6,
+      "socket": "LGA1700",
+      "tdp": 125
+    },
+    "_id": "6808657918baa812872802ed"
+  },
+  {
+    "id": "gpu00001",
+    "name": "NVIDIA RTX 4090",
+    "image": "gpu00001.jpg",
+    "price": 42000000,
+    "description": "Card đồ họa cao cấp 24GB GDDR6X, 16384 CUDA cores",
+    "loai": "GPU",
+    "soLuong": 8,
+    "xuatXu": "Mỹ",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "vram": 12,
+      "loaiRam": "GDDR6X",
+      "boostClock": 2.61,
+      "cudaCores": 7680,
+      "tdp": 285
+    },
+    "_id": "6808657918baa812872802ee"
+  },
+  {
+    "id": "gpu00002",
+    "name": "AMD Radeon RX 7900 XTX",
+    "image": "gpu00002.jpg",
+    "price": 25000000,
+    "description": "Card đồ họa cao cấp 24GB GDDR6, 12288 stream processors",
+    "loai": "GPU",
+    "soLuong": 10,
+    "xuatXu": "Mỹ",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "vram": 12,
+      "loaiRam": "GDDR6X",
+      "boostClock": 2.61,
+      "cudaCores": 7680,
+      "tdp": 285
+    },
+    "_id": "6808657918baa812872802ef"
+  },
+  {
+    "id": "gpu00003",
+    "name": "NVIDIA RTX 4070 Ti",
+    "image": "gpu00003.jpg",
+    "price": 18500000,
+    "description": "Card đồ họa 12GB GDDR6X, 7680 CUDA cores",
+    "loai": "GPU",
+    "soLuong": 15,
+    "xuatXu": "Mỹ",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "vram": 12,
+      "loaiRam": "GDDR6X",
+      "boostClock": 2.61,
+      "cudaCores": 7680,
+      "tdp": 285
+    },
+    "_id": "6808657918baa812872802f0"
+  },
+  {
+    "id": "ram00001",
+    "name": "Corsair Vengeance RGB Pro 32GB",
+    "image": "ram00001.jpg",
+    "price": 3200000,
+    "description": "Bộ nhớ DDR4 3600MHz, 2x16GB, LED RGB",
+    "loai": "RAM",
+    "soLuong": 30,
+    "xuatXu": "Mỹ",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "dungLuong": 16,
+      "loai": "DDR5",
+      "tocDo": 5200,
+      "latency": "CL36",
+      "rgb": false
+    },
+    "_id": "6808657918baa812872802f1"
+  },
+  {
+    "id": "ram00002",
+    "name": "G.Skill Trident Z5 RGB 32GB",
+    "image": "ram00002.jpg",
+    "price": 4500000,
+    "description": "Bộ nhớ DDR5 6000MHz, 2x16GB, LED RGB",
+    "loai": "RAM",
+    "soLuong": 25,
+    "xuatXu": "Đài Loan",
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "dungLuong": 16,
+      "loai": "DDR5",
+      "tocDo": 5200,
+      "latency": "CL36",
+      "rgb": false
+    },
+    "_id": "6808657918baa812872802f2"
   },
   {
     "id": "hdd00001",
@@ -151,7 +255,15 @@
     "loai": "HDD",
     "soLuong": 40,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "dungLuong": 2000,
+      "tocDoQuay": 7200,
+      "dungLuongCache": 256,
+      "chuanGiaoTiep": "SATA 3",
+      "kichThuoc": 3.5
+    },
+    "_id": "6808657918baa812872802f3"
   },
   {
     "id": "hdd00002",
@@ -162,7 +274,15 @@
     "loai": "HDD",
     "soLuong": 35,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "dungLuong": 2000,
+      "tocDoQuay": 7200,
+      "dungLuongCache": 256,
+      "chuanGiaoTiep": "SATA 3",
+      "kichThuoc": 3.5
+    },
+    "_id": "6808657918baa812872802f4"
   },
   {
     "id": "mbo00001",
@@ -173,7 +293,15 @@
     "loai": "Mainboard",
     "soLuong": 10,
     "xuatXu": "Đài Loan",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "chipset": "B760",
+      "socket": "LGA1700",
+      "kieuRam": "DDR5",
+      "kheM2": 3,
+      "wifi": true
+    },
+    "_id": "6808657918baa812872802f5"
   },
   {
     "id": "mbo00002",
@@ -184,7 +312,15 @@
     "loai": "Mainboard",
     "soLuong": 12,
     "xuatXu": "Đài Loan",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "chipset": "B760",
+      "socket": "LGA1700",
+      "kieuRam": "DDR5",
+      "kheM2": 3,
+      "wifi": true
+    },
+    "_id": "6808657918baa812872802f6"
   },
   {
     "id": "mbo00003",
@@ -195,7 +331,15 @@
     "loai": "Mainboard",
     "soLuong": 15,
     "xuatXu": "Đài Loan",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "chipset": "B760",
+      "socket": "LGA1700",
+      "kieuRam": "DDR5",
+      "kheM2": 3,
+      "wifi": true
+    },
+    "_id": "6808657918baa812872802f7"
   },
   {
     "id": "psu00001",
@@ -206,7 +350,15 @@
     "loai": "PSU",
     "soLuong": 20,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "congSuat": 850,
+      "chungNhan": "80Plus Gold",
+      "modular": "Full",
+      "quanLuoi": 135,
+      "baoHanh": 10
+    },
+    "_id": "6808657918baa812872802f8"
   },
   {
     "id": "psu00002",
@@ -217,7 +369,15 @@
     "loai": "PSU",
     "soLuong": 8,
     "xuatXu": "Đài Loan",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "congSuat": 850,
+      "chungNhan": "80Plus Gold",
+      "modular": "Full",
+      "quanLuoi": 135,
+      "baoHanh": 10
+    },
+    "_id": "6808657918baa812872802f9"
   },
   {
     "id": "psu00003",
@@ -228,7 +388,15 @@
     "loai": "PSU",
     "soLuong": 25,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "congSuat": 850,
+      "chungNhan": "80Plus Gold",
+      "modular": "Full",
+      "quanLuoi": 135,
+      "baoHanh": 10
+    },
+    "_id": "6808657918baa812872802fa"
   },
   {
     "id": "cse00001",
@@ -239,7 +407,15 @@
     "loai": "Case",
     "soLuong": 15,
     "xuatXu": "Trung Quốc",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "kieuCase": "Mid Tower",
+      "chatLieu": "Nhôm + Kính cường lực",
+      "soKheRoi": 7,
+      "soQuatDiKem": 3,
+      "rgb": true
+    },
+    "_id": "6808657918baa812872802fb"
   },
   {
     "id": "cse00002",
@@ -250,7 +426,15 @@
     "loai": "Case",
     "soLuong": 8,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "kieuCase": "Mid Tower",
+      "chatLieu": "Nhôm + Kính cường lực",
+      "soKheRoi": 7,
+      "soQuatDiKem": 3,
+      "rgb": true
+    },
+    "_id": "6808657918baa812872802fc"
   },
   {
     "id": "cse00003",
@@ -261,7 +445,15 @@
     "loai": "Case",
     "soLuong": 12,
     "xuatXu": "Thụy Điển",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "kieuCase": "Mid Tower",
+      "chatLieu": "Nhôm + Kính cường lực",
+      "soKheRoi": 7,
+      "soQuatDiKem": 3,
+      "rgb": true
+    },
+    "_id": "6808657918baa812872802fd"
   },
   {
     "id": "clr00001",
@@ -272,7 +464,15 @@
     "loai": "Cooling",
     "soLuong": 10,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "loai": "Tản nước AIO",
+      "kichThuoc": 280,
+      "rgb": true,
+      "tocDoQuay": 1800,
+      "doOn": 35
+    },
+    "_id": "6808657918baa812872802fe"
   },
   {
     "id": "clr00002",
@@ -283,7 +483,15 @@
     "loai": "Cooling",
     "soLuong": 20,
     "xuatXu": "Việt Nam",
-    "tinhTrang": "Hết hàng"
+    "tinhTrang": "Hết hàng",
+    "dacTrung": {
+      "loai": "Tản nước AIO",
+      "kichThuoc": 280,
+      "rgb": true,
+      "tocDoQuay": 1800,
+      "doOn": 35
+    },
+    "_id": "6808657918baa812872802ff"
   },
   {
     "id": "clr00003",
@@ -294,7 +502,15 @@
     "loai": "Cooling",
     "soLuong": 15,
     "xuatXu": "Ba Lan",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "loai": "Tản nước AIO",
+      "kichThuoc": 280,
+      "rgb": true,
+      "tocDoQuay": 1800,
+      "doOn": 35
+    },
+    "_id": "6808657918baa81287280300"
   },
   {
     "id": "fan00001",
@@ -305,7 +521,15 @@
     "loai": "Fan",
     "soLuong": 50,
     "xuatXu": "Trung Quốc",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "kichThuoc": 120,
+      "tocDoQuay": 1800,
+      "luongGio": 62,
+      "doOn": 30,
+      "rgb": true
+    },
+    "_id": "6808657918baa81287280301"
   },
   {
     "id": "fan00002",
@@ -316,7 +540,15 @@
     "loai": "Fan",
     "soLuong": 45,
     "xuatXu": "Áo",
-    "tinhTrang": "Còn hàng"
+    "tinhTrang": "Còn hàng",
+    "dacTrung": {
+      "kichThuoc": 120,
+      "tocDoQuay": 1800,
+      "luongGio": 62,
+      "doOn": 30,
+      "rgb": true
+    },
+    "_id": "6808657918baa81287280302"
   },
   {
     "id": "fan00003",
@@ -327,6 +559,14 @@
     "loai": "Fan",
     "soLuong": 40,
     "xuatXu": "Mỹ",
-    "tinhTrang": "Sắp hết hàng"
+    "tinhTrang": "Sắp hết hàng",
+    "dacTrung": {
+      "kichThuoc": 120,
+      "tocDoQuay": 1800,
+      "luongGio": 62,
+      "doOn": 30,
+      "rgb": true
+    },
+    "_id": "6808657918baa81287280303"
   }
 ]
