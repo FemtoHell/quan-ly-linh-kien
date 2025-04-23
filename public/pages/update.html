@@ -215,6 +215,21 @@
         .action-button:hover {
             text-decoration: underline;
         }
+        /* Thêm loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -230,6 +245,7 @@
         <h2>Cập nhật linh kiện</h2>
         
         <div id="message"></div>
+        <div id="spinner" class="spinner"></div>
         
         <div class="update-tabs">
             <div id="tab-single" class="update-tab active" onclick="switchTab('single')">Cập Nhật Một Linh Kiện</div>
@@ -389,6 +405,8 @@
                     <button type="button" class="primary" onclick="fetchProductsForMultiUpdate()">Lọc</button>
                 </div>
             </div>
+
+            <div id="spinner" class="spinner"></div>
             
             <table id="update-table">
                 <thead>
@@ -483,14 +501,14 @@
         
         // Hàm điền dữ liệu vào form
         function fillForm(product) {
-            document.getElementById('id').value = product.id;
-            document.getElementById('name').value = product.name;
-            document.getElementById('loai').value = product.loai;
-            document.getElementById('price').value = product.price;
-            document.getElementById('soLuong').value = product.soLuong;
-            document.getElementById('xuatXu').value = product.xuatXu;
-            document.getElementById('tinhTrang').value = product.tinhTrang;
-            document.getElementById('description').value = product.description;
+            document.getElementById('id').value = product.id || '';
+            document.getElementById('name').value = product.name || '';
+            document.getElementById('loai').value = product.loai || '';
+            document.getElementById('price').value = product.price || '';
+            document.getElementById('soLuong').value = product.soLuong || '';
+            document.getElementById('xuatXu').value = product.xuatXu || '';
+            document.getElementById('tinhTrang').value = product.tinhTrang || 'Còn hàng';
+            document.getElementById('description').value = product.description || '';
         }
         
         // Hàm cập nhật một sản phẩm
@@ -528,15 +546,25 @@
                 formData.append('image', imageFile);
             }
             
+            // Hiển thị loading spinner
+            showMessage("Đang cập nhật...", "info");
+            
             // Gửi yêu cầu cập nhật
             fetch(`/api/linhkien/${id}`, {
                 method: 'PUT',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || `Lỗi HTTP: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log("Phản hồi từ server:", data);
-                showMessage(data.message, "success");
+                showMessage(data.message || "Cập nhật thành công", "success");
                 
                 // Làm mới danh sách
                 fetchRecentProducts();
@@ -552,10 +580,30 @@
             });
         }
         
+        // Hàm tải thông tin chi tiết sản phẩm theo ID
+        async function fetchProductById(id) {
+            try {
+                const response = await fetch(`/api/linhkien/${id}`);
+                if (!response.ok) {
+                    throw new Error(`Lỗi HTTP: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin sản phẩm:', error);
+                showMessage('Không thể tải thông tin sản phẩm.', 'error');
+                throw error;
+            }
+        }
+
         // Hàm tải danh sách sản phẩm gần đây
         function fetchRecentProducts() {
             fetch('/api/linhkien?limit=10')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Lỗi HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     renderRecentProducts(data.products);
                 })
@@ -570,7 +618,7 @@
             const productsList = document.getElementById('products-list');
             productsList.innerHTML = '';
             
-            if (products.length === 0) {
+            if (!products || products.length === 0) {
                 const row = document.createElement('tr');
                 const cell = document.createElement('td');
                 cell.colSpan = 5;
@@ -610,8 +658,12 @@
                 // Nút sửa
                 const editBtn = document.createElement('a');
                 editBtn.textContent = 'Sửa';
-                editBtn.href = `/update?id=${product.id}`;
+                editBtn.href = '#';
                 editBtn.className = 'action-button';
+                editBtn.onclick = function(e) {
+                    e.preventDefault();
+                    loadProductForEdit(product.id);
+                };
                 actionCell.appendChild(editBtn);
                 
                 row.appendChild(actionCell);
@@ -620,8 +672,38 @@
             });
         }
         
+        // Hàm tải thông tin sản phẩm vào form khi bấm nút sửa
+        async function loadProductForEdit(id) {
+            try {
+                showMessage('Đang tải thông tin sản phẩm...', 'info');
+                document.getElementById('spinner').style.display = 'block';
+                
+                // Tải thông tin chi tiết của sản phẩm
+                const product = await fetchProductById(id);
+                
+                // Điền thông tin vào form
+                fillForm(product);
+                
+                // Hiển thị form
+                document.getElementById('update-form').style.display = 'block';
+                
+                // Cuộn trang lên form
+                document.getElementById('update-form').scrollIntoView({ behavior: 'smooth' });
+                
+                // Ẩn spinner
+                document.getElementById('spinner').style.display = 'none';
+                showMessage('Đã tải thông tin sản phẩm. Vui lòng cập nhật thông tin cần thiết.', 'success');
+            } catch (error) {
+                document.getElementById('spinner').style.display = 'none';
+                showMessage('Không thể tải thông tin sản phẩm: ' + error.message, 'error');
+            }
+        }
+        
         // Hàm tải danh sách sản phẩm cho cập nhật hàng loạt
         function fetchProductsForMultiUpdate() {
+            // Hiển thị spinner
+            document.getElementById('spinner').style.display = 'block';
+            
             // Reset lại trang về 1 nếu đang lọc
             currentPage = 1;
             
@@ -640,14 +722,23 @@
             if (status) params.append('tinhTrang', status);
             
             fetch(`/api/linhkien?${params.toString()}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Lỗi HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     renderProductsForMultiUpdate(data.products);
                     renderPagination(data.pagination);
+                    // Ẩn spinner
+                    document.getElementById('spinner').style.display = 'none';
                 })
                 .catch(error => {
                     console.error('Lỗi khi tải dữ liệu sản phẩm:', error);
                     showMessage('Không thể tải dữ liệu sản phẩm.', 'error');
+                    // Ẩn spinner khi có lỗi
+                    document.getElementById('spinner').style.display = 'none';
                 });
         }
         
@@ -656,7 +747,7 @@
             const productsList = document.getElementById('multi-products-list');
             productsList.innerHTML = '';
             
-            if (products.length === 0) {
+            if (!products || products.length === 0) {
                 const row = document.createElement('tr');
                 const cell = document.createElement('td');
                 cell.colSpan = 8;
@@ -667,7 +758,8 @@
                 return;
             }
             
-            productsToUpdate = [...products]; // Lưu lại danh sách sản phẩm
+            // Lưu lại toàn bộ thông tin sản phẩm (tạo bản sao sâu)
+            productsToUpdate = JSON.parse(JSON.stringify(products));
             
             products.forEach((product, index) => {
                 const row = document.createElement('tr');
@@ -679,6 +771,7 @@
                 checkbox.type = 'checkbox';
                 checkbox.value = product.id;
                 checkbox.className = 'product-checkbox';
+                checkbox.dataset.index = index;
                 checkboxCell.appendChild(checkbox);
                 row.appendChild(checkboxCell);
                 
@@ -793,10 +886,23 @@
             const field = element.dataset.field;
             let value = element.value;
             
+            // Kiểm tra nếu index không hợp lệ
+            if (isNaN(index) || index < 0 || index >= productsToUpdate.length) {
+                console.error('Index không hợp lệ:', index);
+                return;
+            }
+            
             // Chuyển đổi dữ liệu số nếu cần
             if (field === 'price' || field === 'soLuong') {
                 value = parseInt(value);
+                if (isNaN(value)) {
+                    console.error('Giá trị không hợp lệ cho trường', field, ':', value);
+                    element.value = productsToUpdate[index][field]; // Khôi phục giá trị cũ
+                    return;
+                }
             }
+            
+            console.log(`Cập nhật sản phẩm [${index}] - ${field}: `, value);
             
             // Cập nhật dữ liệu trong mảng
             productsToUpdate[index][field] = value;
@@ -826,9 +932,33 @@
                 return;
             }
             
-            // Lọc các sản phẩm đã chọn
+            // Hiển thị spinner
+            document.getElementById('spinner').style.display = 'block';
+            showMessage('Đang cập nhật...', 'info');
+            
+            // Lọc các sản phẩm đã chọn và tạo mảng dữ liệu cập nhật
             const selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
-            const updates = productsToUpdate.filter(product => selectedIds.includes(product.id));
+            const updates = [];
+            
+            selectedIds.forEach(id => {
+                const product = productsToUpdate.find(p => p.id === id);
+                if (product) {
+                    // Đảm bảo các trường số được convert đúng
+                    const updateData = {
+                        id: product.id,
+                        name: product.name,
+                        loai: product.loai,
+                        price: parseInt(product.price),
+                        soLuong: parseInt(product.soLuong),
+                        xuatXu: product.xuatXu,
+                        tinhTrang: product.tinhTrang,
+                        description: product.description
+                    };
+                    updates.push(updateData);
+                }
+            });
+            
+            console.log('Dữ liệu cập nhật:', updates);
             
             // Gửi dữ liệu lên server
             fetch('/api/linhkien', {
@@ -838,14 +968,29 @@
                 },
                 body: JSON.stringify(updates)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || `Lỗi HTTP: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('Phản hồi từ server:', data);
-                showMessage(data.message, 'success');
-                fetchProductsForMultiUpdate(); // Tải lại dữ liệu
+                // Ẩn spinner
+                document.getElementById('spinner').style.display = 'none';
+                showMessage(data.message || `Đã cập nhật ${updates.length} sản phẩm thành công`, 'success');
+                
+                // Đợi một chút trước khi tải lại dữ liệu
+                setTimeout(() => {
+                    fetchProductsForMultiUpdate();
+                }, 1000);
             })
             .catch(error => {
                 console.error('Lỗi khi cập nhật:', error);
+                // Ẩn spinner
+                document.getElementById('spinner').style.display = 'none';
                 showMessage('Lỗi khi cập nhật: ' + error.message, 'error');
             });
         }
@@ -861,7 +1006,11 @@
             const paginationContainer = document.getElementById('pagination-container');
             paginationContainer.innerHTML = '';
             
-            totalPages = pagination.totalPages;
+            if (!pagination) {
+                return;
+            }
+            
+            totalPages = pagination.totalPages || 1;
             
             // Nút trang trước
             const prevButton = document.createElement('button');
@@ -949,19 +1098,43 @@
         // Hàm hiển thị thông báo
         function showMessage(message, type) {
             const messageElement = document.getElementById('message');
+            if (!messageElement) return;
+            
             messageElement.textContent = message;
-            messageElement.className = type;
+            
+            // Xóa tất cả các class hiện tại
+            messageElement.className = '';
+            
+            // Thêm class theo loại
+            if (type === 'success') {
+                messageElement.classList.add('success');
+            } else if (type === 'error') {
+                messageElement.classList.add('error');
+            } else {
+                // Loại thông báo khác, ví dụ: info
+                messageElement.style.backgroundColor = '#e7f3fe';
+                messageElement.style.color = '#0c5460';
+                messageElement.style.border = '1px solid #bee5eb';
+            }
+            
             messageElement.style.display = 'block';
             
-            // Tự động ẩn sau 3 giây
-            setTimeout(() => {
-                messageElement.style.display = 'none';
-            }, 3000);
+            // Tự động ẩn sau 3 giây nếu là success hoặc info
+            if (type === 'success' || type === 'info') {
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                }, 3000);
+            }
         }
         
         // Hàm định dạng tiền tệ
         function formatCurrency(amount) {
-            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+            try {
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+            } catch (error) {
+                console.error('Lỗi khi định dạng tiền tệ:', error);
+                return amount + ' ₫';
+            }
         }
     </script>
 </body>

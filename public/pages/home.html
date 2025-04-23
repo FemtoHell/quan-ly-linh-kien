@@ -69,6 +69,190 @@
         .menu-item a:hover {
             background-color: #45a049;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+        th:hover {
+            background-color: #e8e8e8;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .search-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .search-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .search-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .search-tab.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .search-content {
+            display: none;
+        }
+        .search-content.active {
+            display: block;
+        }
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .search-category {
+            flex: 1;
+            min-width: 200px;
+        }
+        .search-category h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        .search-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .search-option {
+            padding: 8px 12px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .search-option:hover {
+            background-color: #e9e9e9;
+        }
+        .search-option.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: #f1f1f1;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .pagination button.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+        #message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .action-button {
+            color: #0366d6;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .action-button:hover {
+            text-decoration: underline;
+        }
+        .delete-button {
+            color: #d73a49;
+        }
+        .adv-search-field {
+            margin-bottom: 10px;
+        }
+        .adv-search-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .adv-search-field input, .adv-search-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .adv-search-operators {
+            margin: 10px 0;
+        }
+        .adv-search-operators label {
+            margin-right: 15px;
+        }
+        .toggle-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .toggle-button:hover {
+            background-color: #45a049;
+        }
+        #list-section {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +274,163 @@
                 <li>Xóa linh kiện</li>
             </ul>
         </div>
+
+        <div id="message"></div>
+        
+        <button id="toggle-list" class="toggle-button" onclick="toggleListSection()">Hiển thị danh sách linh kiện</button>
+
+        <div id="list-section">
+            <div class="search-container">
+                <h2>Tìm kiếm linh kiện</h2>
+                
+                <div class="search-tabs">
+                    <div class="search-tab active" onclick="switchSearchTab('category-search')">Tìm theo danh mục</div>
+                    <div class="search-tab" onclick="switchSearchTab('advanced-search')">Tìm kiếm nâng cao</div>
+                </div>
+                
+                <div id="category-search" class="search-content active">
+                    <div class="search-row">
+                        <div class="search-category">
+                            <h3>Loại linh kiện</h3>
+                            <div class="search-options" id="category-options">
+                                <!-- Danh sách loại sẽ được điền từ JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-row">
+                        <div class="search-category">
+                            <h3>Khoảng giá</h3>
+                            <div class="search-options">
+                                <div class="search-option" data-min="0" data-max="2000000">Dưới 2 triệu</div>
+                                <div class="search-option" data-min="2000000" data-max="4000000">Từ 2 - 4 triệu</div>
+                                <div class="search-option" data-min="4000000" data-max="7000000">Từ 4 - 7 triệu</div>
+                                <div class="search-option" data-min="7000000" data-max="13000000">Từ 7 - 13 triệu</div>
+                                <div class="search-option" data-min="13000000" data-max="20000000">Từ 13 - 20 triệu</div>
+                                <div class="search-option" data-min="20000000" data-max="999999999">Trên 20 triệu</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-row">
+                        <div class="search-category">
+                            <h3>Tìm kiếm theo tên</h3>
+                            <input type="text" id="search-name" placeholder="Nhập tên sản phẩm..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button id="search-button" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Tìm kiếm</button>
+                        <button id="reset-button" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Đặt lại</button>
+                    </div>
+                </div>
+                
+                <div id="advanced-search" class="search-content">
+                    <h3>Tìm kiếm theo nhiều điều kiện</h3>
+                    
+                    <div class="adv-search-operators">
+                        <label>
+                            <input type="radio" name="search-operator" value="and" checked> Tất cả điều kiện (AND)
+                        </label>
+                        <label>
+                            <input type="radio" name="search-operator" value="or"> Một trong các điều kiện (OR)
+                        </label>
+                    </div>
+                    
+                    <div class="adv-search-field">
+                        <label for="adv-name">Tên sản phẩm:</label>
+                        <input type="text" id="adv-name" placeholder="Nhập tên sản phẩm...">
+                    </div>
+                    
+                    <div class="adv-search-field">
+                        <label for="adv-loai">Loại sản phẩm:</label>
+                        <select id="adv-loai">
+                            <option value="">-- Chọn loại --</option>
+                            <option value="CPU">CPU</option>
+                            <option value="GPU">GPU</option>
+                            <option value="RAM">RAM</option>
+                            <option value="SSD">SSD</option>
+                            <option value="HDD">HDD</option>
+                            <option value="Mainboard">Mainboard</option>
+                            <option value="PSU">PSU</option>
+                            <option value="Case">Case</option>
+                            <option value="Cooling">Cooling</option>
+                            <option value="Fan">Fan</option>
+                        </select>
+                    </div>
+                    
+                    <div class="adv-search-field">
+                        <label for="adv-min-price">Giá tối thiểu:</label>
+                        <input type="number" id="adv-min-price" placeholder="Nhập giá tối thiểu..." min="0">
+                    </div>
+                    
+                    <div class="adv-search-field">
+                        <label for="adv-max-price">Giá tối đa:</label>
+                        <input type="number" id="adv-max-price" placeholder="Nhập giá tối đa..." min="0">
+                    </div>
+                    
+                    <div class="adv-search-field">
+                        <label for="adv-tinh-trang">Tình trạng:</label>
+                        <select id="adv-tinh-trang">
+                            <option value="">-- Chọn tình trạng --</option>
+                            <option value="Còn hàng">Còn hàng</option>
+                            <option value="Sắp hết hàng">Sắp hết hàng</option>
+                            <option value="Hết hàng">Hết hàng</option>
+                            <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
+                        </select>
+                    </div>
+                    
+                    <div class="adv-search-field">
+                        <label for="adv-xuat-xu">Xuất xứ:</label>
+                        <input type="text" id="adv-xuat-xu" placeholder="Nhập xuất xứ...">
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button id="adv-search-button" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Tìm kiếm nâng cao</button>
+                        <button id="adv-reset-button" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Đặt lại</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result-container">
+                <h2>Danh sách linh kiện</h2>
+                
+                <div class="sort-controls" style="margin-bottom: 10px; text-align: right;">
+                    <label for="sort-field">Sắp xếp theo:</label>
+                    <select id="sort-field" onchange="changeSorting()">
+                        <option value="id">ID</option>
+                        <option value="name">Tên sản phẩm</option>
+                        <option value="price">Giá</option>
+                        <option value="loai">Loại</option>
+                    </select>
+                    <select id="sort-order" onchange="changeSorting()">
+                        <option value="asc">Tăng dần</option>
+                        <option value="desc">Giảm dần</option>
+                    </select>
+                </div>
+                
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('id')">ID</th>
+                            <th onclick="sortTable('name')">Tên sản phẩm</th>
+                            <th onclick="sortTable('loai')">Loại</th>
+                            <th onclick="sortTable('price')">Giá</th>
+                            <th onclick="sortTable('soLuong')">Số lượng</th>
+                            <th onclick="sortTable('tinhTrang')">Tình trạng</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-list">
+                        <!-- Dữ liệu sẽ được điền từ JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Phân trang sẽ được tạo từ JavaScript -->
+                </div>
+            </div>
+        </div>
         
         <div class="menu">
             <div class="menu-item">
@@ -109,5 +450,592 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal chi tiết sản phẩm -->
+    <div id="product-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000;">
+        <div style="position: relative; margin: 10% auto; padding: 20px; width: 80%; max-width: 700px; background-color: white; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+            <span id="close-modal" style="position: absolute; top: 10px; right: 15px; font-size: 24px; font-weight: bold; cursor: pointer;">&times;</span>
+            <div id="product-details">
+                <!-- Chi tiết sản phẩm sẽ được điền từ JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Biến toàn cục
+        let currentPage = 1;
+        let totalPages = 1;
+        let productsPerPage = 10;
+        let currentFilters = {};
+        let currentSortField = 'id';
+        let currentSortOrder = 'asc';
+        let isListVisible = false;
+
+        // Tải dữ liệu khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thiết lập sự kiện cho nút tìm kiếm
+            document.getElementById('search-button').addEventListener('click', function() {
+                currentPage = 1;
+                fetchProducts();
+            });
+            
+            // Thiết lập sự kiện cho nút đặt lại tìm kiếm danh mục
+            document.getElementById('reset-button').addEventListener('click', function() {
+                resetFilters();
+                fetchProducts();
+            });
+            
+            // Thiết lập sự kiện cho nút tìm kiếm nâng cao
+            document.getElementById('adv-search-button').addEventListener('click', function() {
+                currentPage = 1;
+                searchWithAdvancedConditions();
+            });
+            
+            // Thiết lập sự kiện cho nút đặt lại tìm kiếm nâng cao
+            document.getElementById('adv-reset-button').addEventListener('click', function() {
+                resetAdvancedSearch();
+            });
+            
+            // Thiết lập sự kiện cho các tùy chọn loại sản phẩm
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('search-option')) {
+                    toggleOption(e.target);
+                }
+            });
+            
+            // Thiết lập sự kiện đóng modal
+            document.getElementById('close-modal').addEventListener('click', function() {
+                document.getElementById('product-modal').style.display = 'none';
+            });
+            
+            // Đóng modal khi click bên ngoài
+            window.addEventListener('click', function(e) {
+                const modal = document.getElementById('product-modal');
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+        
+        // Hàm hiển thị/ẩn phần danh sách
+        function toggleListSection() {
+            const listSection = document.getElementById('list-section');
+            const toggleButton = document.getElementById('toggle-list');
+            
+            if (isListVisible) {
+                listSection.style.display = 'none';
+                toggleButton.textContent = 'Hiển thị danh sách linh kiện';
+                isListVisible = false;
+            } else {
+                listSection.style.display = 'block';
+                toggleButton.textContent = 'Ẩn danh sách linh kiện';
+                isListVisible = true;
+                
+                // Tải dữ liệu khi hiển thị lần đầu
+                if (!listSection.dataset.loaded) {
+                    fetchCategories();
+                    fetchProducts();
+                    listSection.dataset.loaded = 'true';
+                }
+            }
+        }
+
+        // Hàm chuyển tab tìm kiếm
+        function switchSearchTab(tabId) {
+            // Ẩn tất cả nội dung tab
+            document.querySelectorAll('.search-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Bỏ active tất cả tab
+            document.querySelectorAll('.search-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Hiện tab được chọn
+            document.getElementById(tabId).classList.add('active');
+            
+            // Active tab tương ứng
+            let activeTab;
+            if (tabId === 'category-search') {
+                activeTab = document.querySelector('.search-tab:nth-child(1)');
+            } else if (tabId === 'advanced-search') {
+                activeTab = document.querySelector('.search-tab:nth-child(2)');
+            }
+            
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+
+        // Hàm tải danh sách loại sản phẩm
+        function fetchCategories() {
+            fetch('/api/loai')
+                .then(response => response.json())
+                .then(categories => {
+                    const categoryOptions = document.getElementById('category-options');
+                    categoryOptions.innerHTML = '';
+                    
+                    // Thêm tùy chọn "Tất cả"
+                    const allOption = document.createElement('div');
+                    allOption.className = 'search-option active';
+                    allOption.textContent = 'Tất cả';
+                    allOption.dataset.value = '';
+                    categoryOptions.appendChild(allOption);
+                    
+                    // Thêm các loại sản phẩm
+                    categories.forEach(category => {
+                        const option = document.createElement('div');
+                        option.className = 'search-option';
+                        option.textContent = category;
+                        option.dataset.value = category;
+                        categoryOptions.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải danh sách loại:', error);
+                    showMessage('Không thể tải danh sách loại sản phẩm.', 'error');
+                });
+        }
+
+        // Hàm tải dữ liệu sản phẩm
+        function fetchProducts() {
+            // Xây dựng tham số tìm kiếm
+            const searchParams = new URLSearchParams();
+            searchParams.append('page', currentPage);
+            searchParams.append('limit', productsPerPage);
+            searchParams.append('sortField', currentSortField);
+            searchParams.append('sortOrder', currentSortOrder);
+            
+            // Thêm bộ lọc
+            if (currentFilters.loai) {
+                searchParams.append('loai', currentFilters.loai);
+            }
+            
+            if (currentFilters.minPrice) {
+                searchParams.append('minPrice', currentFilters.minPrice);
+            }
+            
+            if (currentFilters.maxPrice) {
+                searchParams.append('maxPrice', currentFilters.maxPrice);
+            }
+            
+            const searchName = document.getElementById('search-name').value.trim();
+            if (searchName) {
+                searchParams.append('name', searchName);
+            }
+            
+            // Gửi yêu cầu API
+            fetch(`/api/linhkien?${searchParams.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderProducts(data.products);
+                    renderPagination(data.pagination);
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu sản phẩm:', error);
+                    showMessage('Không thể tải dữ liệu sản phẩm.', 'error');
+                });
+        }
+
+        // Hàm hiển thị sản phẩm
+        function renderProducts(products) {
+            const productsList = document.getElementById('products-list');
+            productsList.innerHTML = '';
+            
+            if (products.length === 0) {
+                const noDataRow = document.createElement('tr');
+                const noDataCell = document.createElement('td');
+                noDataCell.textContent = 'Không có dữ liệu';
+                noDataCell.colSpan = 7;
+                noDataCell.style.textAlign = 'center';
+                noDataRow.appendChild(noDataCell);
+                productsList.appendChild(noDataRow);
+                return;
+            }
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                
+                // ID
+                const idCell = document.createElement('td');
+                idCell.textContent = product.id;
+                row.appendChild(idCell);
+                
+                // Tên
+                const nameCell = document.createElement('td');
+                nameCell.textContent = product.name;
+                row.appendChild(nameCell);
+                
+                // Loại
+                const typeCell = document.createElement('td');
+                typeCell.textContent = product.loai;
+                row.appendChild(typeCell);
+                
+                // Giá
+                const priceCell = document.createElement('td');
+                priceCell.textContent = formatCurrency(product.price);
+                row.appendChild(priceCell);
+                
+                // Số lượng
+                const quantityCell = document.createElement('td');
+                quantityCell.textContent = product.soLuong;
+                row.appendChild(quantityCell);
+                
+                // Tình trạng
+                const statusCell = document.createElement('td');
+                statusCell.textContent = product.tinhTrang;
+                row.appendChild(statusCell);
+                
+                // Thao tác
+                const actionCell = document.createElement('td');
+                const actionButtons = document.createElement('div');
+                actionButtons.className = 'action-buttons';
+                
+                // Nút xem chi tiết
+                const viewBtn = document.createElement('a');
+                viewBtn.textContent = 'Chi tiết';
+                viewBtn.className = 'action-button';
+                viewBtn.href = '#';
+                viewBtn.onclick = function(e) {
+                    e.preventDefault();
+                    showProductDetails(product);
+                };
+                actionButtons.appendChild(viewBtn);
+                
+               
+                
+                actionCell.appendChild(actionButtons);
+                row.appendChild(actionCell);
+                
+                productsList.appendChild(row);
+            });
+        }
+
+        // Hàm hiển thị phân trang
+        function renderPagination(pagination) {
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = '';
+            
+            totalPages = pagination.totalPages;
+            
+            // Nút trang trước
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Trước';
+            prevButton.disabled = currentPage <= 1;
+            prevButton.onclick = function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchProducts();
+                }
+            };
+            paginationElement.appendChild(prevButton);
+            
+            // Các nút trang
+            const maxVisiblePages = 5; // Số trang hiển thị tối đa
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            // Điều chỉnh lại startPage nếu cần
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            // Tạo nút trang đầu nếu cần
+            if (startPage > 1) {
+                const firstPageButton = document.createElement('button');
+                firstPageButton.textContent = '1';
+                firstPageButton.onclick = function() {
+                    currentPage = 1;
+                    fetchProducts();
+                };
+                paginationElement.appendChild(firstPageButton);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.margin = '0 5px';
+                    paginationElement.appendChild(ellipsis);
+                }
+            }
+            
+            // Tạo các nút trang
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === currentPage ? 'active' : '';
+                pageButton.onclick = function() {
+                    currentPage = i;
+                    fetchProducts();
+                };
+                paginationElement.appendChild(pageButton);
+            }
+            
+            // Tạo nút trang cuối nếu cần
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.margin = '0 5px';
+                    paginationElement.appendChild(ellipsis);
+                }
+                
+                const lastPageButton = document.createElement('button');
+                lastPageButton.textContent = totalPages;
+                lastPageButton.onclick = function() {
+                    currentPage = totalPages;
+                    fetchProducts();
+                };
+                paginationElement.appendChild(lastPageButton);
+            }
+            
+            // Nút trang sau
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Sau';
+            nextButton.disabled = currentPage >= totalPages;
+            nextButton.onclick = function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    fetchProducts();
+                }
+            };
+            paginationElement.appendChild(nextButton);
+        }
+
+        // Hàm chuyển đổi trạng thái tùy chọn tìm kiếm
+        function toggleOption(option) {
+            // Xử lý cho loại sản phẩm
+            if (option.parentElement.id === 'category-options') {
+                // Bỏ active tất cả
+                const options = option.parentElement.querySelectorAll('.search-option');
+                options.forEach(opt => opt.classList.remove('active'));
+                
+                // Thêm active cho tùy chọn được chọn
+                option.classList.add('active');
+                
+                // Cập nhật bộ lọc
+                if (option.dataset.value) {
+                    currentFilters.loai = option.dataset.value;
+                } else {
+                    delete currentFilters.loai;
+                }
+            }
+            // Xử lý cho khoảng giá
+            else if (option.hasAttribute('data-min') && option.hasAttribute('data-max')) {
+                // Bỏ active tất cả trong cùng nhóm
+                const options = option.parentElement.querySelectorAll('.search-option');
+                options.forEach(opt => opt.classList.remove('active'));
+                
+                // Thêm active cho tùy chọn được chọn
+                option.classList.add('active');
+                
+                // Cập nhật bộ lọc
+                currentFilters.minPrice = option.dataset.min;
+                currentFilters.maxPrice = option.dataset.max;
+            }
+        }
+
+        // Hàm đặt lại bộ lọc
+        function resetFilters() {
+            currentFilters = {};
+            
+            // Đặt lại loại sản phẩm
+            const categoryOptions = document.getElementById('category-options').querySelectorAll('.search-option');
+            categoryOptions.forEach(option => option.classList.remove('active'));
+            categoryOptions[0].classList.add('active'); // Tùy chọn "Tất cả"
+            
+            // Đặt lại khoảng giá
+            const priceOptions = document.querySelectorAll('.search-options:not(#category-options) .search-option');
+            priceOptions.forEach(option => option.classList.remove('active'));
+            
+            // Đặt lại ô tìm kiếm
+            document.getElementById('search-name').value = '';
+            
+            // Quay lại trang đầu tiên
+            currentPage = 1;
+        }
+        
+        // Hàm đặt lại tìm kiếm nâng cao
+        function resetAdvancedSearch() {
+            document.getElementById('adv-name').value = '';
+            document.getElementById('adv-loai').value = '';
+            document.getElementById('adv-min-price').value = '';
+            document.getElementById('adv-max-price').value = '';
+            document.getElementById('adv-tinh-trang').value = '';
+            document.getElementById('adv-xuat-xu').value = '';
+            document.querySelector('input[name="search-operator"][value="and"]').checked = true;
+            
+            // Quay lại trang đầu tiên
+            currentPage = 1;
+            
+            // Đặt lại bộ lọc
+            currentFilters = {};
+            
+            // Tải lại dữ liệu
+            fetchProducts();
+        }
+        
+        // Hàm tìm kiếm với nhiều điều kiện
+        function searchWithAdvancedConditions() {
+            const name = document.getElementById('adv-name').value.trim();
+            const loai = document.getElementById('adv-loai').value;
+            const minPrice = document.getElementById('adv-min-price').value;
+            const maxPrice = document.getElementById('adv-max-price').value;
+            const tinhTrang = document.getElementById('adv-tinh-trang').value;
+            const xuatXu = document.getElementById('adv-xuat-xu').value.trim();
+            const operator = document.querySelector('input[name="search-operator"]:checked').value;
+            
+            // Tạo danh sách các điều kiện
+            const conditions = [];
+            
+            if (name) {
+                conditions.push({ name: { $regex: name, $options: 'i' } });
+            }
+            
+            if (loai) {
+                conditions.push({ loai: loai });
+            }
+            
+            if (minPrice || maxPrice) {
+                const priceCondition = {};
+                if (minPrice) priceCondition.$gte = parseInt(minPrice);
+                if (maxPrice) priceCondition.$lte = parseInt(maxPrice);
+                conditions.push({ price: priceCondition });
+            }
+            
+            if (tinhTrang) {
+                conditions.push({ tinhTrang: tinhTrang });
+            }
+            
+            if (xuatXu) {
+                conditions.push({ xuatXu: { $regex: xuatXu, $options: 'i' } });
+            }
+            
+            // Nếu không có điều kiện nào, tải tất cả
+            if (conditions.length === 0) {
+                currentFilters = {};
+                fetchProducts();
+                return;
+            }
+            
+            // Tạo query parameters
+            const searchParams = new URLSearchParams();
+            searchParams.append('page', currentPage);
+            searchParams.append('limit', productsPerPage);
+            searchParams.append('sortField', currentSortField);
+            searchParams.append('sortOrder', currentSortOrder);
+            searchParams.append('conditions', JSON.stringify(conditions));
+            searchParams.append('type', operator);
+            
+            // Gửi yêu cầu tìm kiếm
+            fetch(`/api/search/multiple?${searchParams.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderProducts(data);
+                    // Tạo phân trang giả
+                    renderPagination({
+                        total: data.length,
+                        page: 1,
+                        limit: data.length,
+                        totalPages: 1
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tìm kiếm:', error);
+                    showMessage('Không thể thực hiện tìm kiếm.', 'error');
+                });
+        }
+        
+        // Hàm hiển thị chi tiết sản phẩm
+        function showProductDetails(product) {
+            const detailsContainer = document.getElementById('product-details');
+            
+            // Tạo nội dung
+            const content = `
+                <h2>${product.name}</h2>
+                <div style="display: flex; margin-top: 20px;">
+                    <div style="flex: 1; padding-right: 20px;">
+                        <img src="/images/${product.image}" alt="${product.name}" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 2;">
+                        <p><strong>ID:</strong> ${product.id}</p>
+                        <p><strong>Loại:</strong> ${product.loai}</p>
+                        <p><strong>Giá:</strong> ${formatCurrency(product.price)}</p>
+                        <p><strong>Số lượng:</strong> ${product.soLuong}</p>
+                        <p><strong>Xuất xứ:</strong> ${product.xuatXu}</p>
+                        <p><strong>Tình trạng:</strong> ${product.tinhTrang}</p>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h3>Mô tả</h3>
+                    <p>${product.description}</p>
+                </div>
+            `;
+            
+            detailsContainer.innerHTML = content;
+            
+            // Hiển thị modal
+            document.getElementById('product-modal').style.display = 'block';
+        }
+        
+        // Hàm xóa sản phẩm
+        function deleteProduct(id) {
+            fetch(`/api/linhkien/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                showMessage(data.message, 'success');
+                fetchProducts();
+            })
+            .catch(error => {
+                console.error('Lỗi khi xóa sản phẩm:', error);
+                showMessage('Không thể xóa sản phẩm.', 'error');
+            });
+        }
+        
+        // Hàm sắp xếp theo cột bảng
+        function sortTable(field) {
+            // Nếu click vào cùng một cột, đảo ngược thứ tự
+            if (field === currentSortField) {
+                currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortField = field;
+                currentSortOrder = 'asc';
+            }
+            
+            // Cập nhật UI
+            document.getElementById('sort-field').value = currentSortField;
+            document.getElementById('sort-order').value = currentSortOrder;
+            
+            // Tải lại dữ liệu
+            fetchProducts();
+        }
+        
+        // Hàm thay đổi sắp xếp từ dropdown
+        function changeSorting() {
+            currentSortField = document.getElementById('sort-field').value;
+            currentSortOrder = document.getElementById('sort-order').value;
+            fetchProducts();
+        }
+
+        // Hàm hiển thị thông báo
+        function showMessage(message, type) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.className = type;
+            messageElement.style.display = 'block';
+            
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // Hàm định dạng tiền tệ
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+    </script>
 </body>
 </html>
